@@ -32,7 +32,7 @@
   <!-- 性能优化：预连接与字体图标按需加载 -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-  
+
   <!-- Google Fonts - Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +41,77 @@
   <!-- 关键 CSS 优先 -->
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* 主题开关按钮基础样式，与导航风格一致 */
+    .theme-toggle-btn {
+      margin-left: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(45, 55, 72, 0.08);
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 3px rgba(45, 55, 72, 0.05);
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-smooth), background var(--transition-smooth), border-color var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav {
+      gap: 0.5rem;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+      border-color: rgba(255, 217, 61, 0.3);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .theme-toggle-btn:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .theme-toggle-btn .theme-icon {
+      position: absolute;
+      font-size: 1rem;
+      color: var(--text-primary);
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+    }
+
+    /* 初始状态：遵循 data-theme 或系统偏好，JS 会在加载时修正可见性 */
+    .theme-icon-sun {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    .theme-icon-moon {
+      opacity: 0;
+      transform: rotate(-45deg) scale(0.8);
+    }
+
+    :root[data-theme="dark"] .theme-icon-sun {
+      opacity: 0;
+      transform: rotate(45deg) scale(0.8);
+    }
+
+    :root[data-theme="dark"] .theme-icon-moon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    /* 深色下按钮的背景微调（与 style.css 保持一致语义） */
+    :root[data-theme="dark"] .theme-toggle-btn {
+      background: rgba(17, 24, 39, 0.55);
+      border-color: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+  </style>
 
   <!-- 非关键资源：Font Awesome 延迟加载，避免阻塞渲染 -->
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style"
@@ -61,14 +132,19 @@
     <h1>WebNav Hub</h1>
   </header>
   <nav>
-      <ul>
-        <li><a href="#ai-search">Ai搜索</a></li>
-        <li><a href="#social">社交媒体</a></li>
-        <li><a href="#tools">实用工具</a></li>
-        <li><a href="#tech-news">科技资讯</a></li>
-        <li><a href="#cloud-storage">云存储</a></li>
-        <li><a href="#email">电子邮箱</a></li>
-      </ul>
+    <ul>
+      <li><a href="#ai-search">Ai搜索</a></li>
+      <li><a href="#social">社交媒体</a></li>
+      <li><a href="#tools">实用工具</a></li>
+      <li><a href="#tech-news">科技资讯</a></li>
+      <li><a href="#cloud-storage">云存储</a></li>
+      <li><a href="#email">电子邮箱</a></li>
+    </ul>
+    <!-- 主题切换按钮（使用 Font Awesome 图标），放在导航右侧 -->
+    <button id="theme-toggle" aria-label="切换主题" title="切换主题" class="theme-toggle-btn" type="button">
+      <i class="fa-solid fa-sun theme-icon theme-icon-sun" aria-hidden="true"></i>
+      <i class="fa-solid fa-moon theme-icon theme-icon-moon" aria-hidden="true"></i>
+    </button>
   </nav>
   <main>
     <h2 class="category-title" id="ai-search" tabindex="-1">Ai搜索</h2>
